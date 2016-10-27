@@ -1,6 +1,6 @@
 {
   "name": "gitbook-start-heroku-rafadanipedro",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Paquete de node para generar un gitbook",
   "main": "index.js",
   "scripts": {
