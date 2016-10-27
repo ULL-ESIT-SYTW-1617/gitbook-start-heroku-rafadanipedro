@@ -6,7 +6,7 @@
   "scripts": {
     "exec": "babel-node bin/cli.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "babel -d dist/ src/"
+    "build": "babel -d dist/ src/"
   },
   "repository": {
     "type": "git",

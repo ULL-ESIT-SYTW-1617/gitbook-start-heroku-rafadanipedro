@@ -4,16 +4,18 @@ import anadirTareaAlGulpfile from './anadirTareaAlGulpfile'
 import anadirConfig from './anadirConfig'
 import { loadJSON } from './utils'
 
-export default function deploy (nombrePlugin, userArgs) {
-  !estamosEnUnGitbook() ? process.exit(1) : ''
-  existeEnPluginJSON(nombrePlugin) ? process.exit(1) : ''
+export default async function deploy (nombrePlugin, userArgs) {
+  try {
+    !estamosEnUnGitbook() ? process.exit(1) : ''
+    existeEnPluginJSON(nombrePlugin) ? process.exit(1) : ''
 
-  anadirTareaAlGulpfile(nombrePlugin)
-  npmInstall(nombrePlugin).then(() => {
+    anadirTareaAlGulpfile(nombrePlugin)
+    await npmInstall(nombrePlugin)
+
     console.info('Instalado el nuevo plugin!!')
     let pluginPath = path.resolve(process.cwd(), 'node_modules', nombrePlugin)
     let plugin = require(pluginPath)
-    let pluginConfig = plugin.config()
+    let pluginConfig = await plugin.config()
 
     for (let key of Object.keys(pluginConfig) ) {
       if (userArgs[key]) {
@@ -24,9 +26,11 @@ export default function deploy (nombrePlugin, userArgs) {
     anadirConfig(pluginConfig, nombrePlugin.replace(/-(.)/g, m => m[1].toUpperCase()))
 
     if (plugin.start) {
-      plugin.start()
+      await plugin.start()
     }
-  })
+  } catch(err) {
+    console.error(err)
+  }
 }
 
 function estamosEnUnGitbook () {
