@@ -26,7 +26,7 @@ export default async function deploy (nombrePlugin, userArgs) {
     anadirConfig(pluginConfig, nombrePlugin.replace(/-(.)/g, m => m[1].toUpperCase()))
 
     if (plugin.start) {
-      await plugin.start()
+      await plugin.start(pluginConfig)
     }
   } catch(err) {
     console.error(err)
