@@ -15,7 +15,11 @@ export default async function deploy (nombrePlugin, userArgs) {
     console.info('Instalado el nuevo plugin!!')
     let pluginPath = path.resolve(process.cwd(), 'node_modules', nombrePlugin)
     let plugin = require(pluginPath)
-    let pluginConfig = await plugin.config()
+
+    let pluginConfig = plugin.config()
+    if (typeof pluginConfig.then === 'Function') {
+      pluginConfig = await pluginConfig
+    }
 
     for (let key of Object.keys(pluginConfig) ) {
       if (userArgs[key]) {
@@ -26,7 +30,10 @@ export default async function deploy (nombrePlugin, userArgs) {
     anadirConfig(pluginConfig, nombrePlugin.replace(/-(.)/g, m => m[1].toUpperCase()))
 
     if (plugin.start) {
-      await plugin.start(pluginConfig)
+      let prom = plugin.start(pluginConfig)
+      if (typeof prom.then === 'Function') {
+        await prom
+      }
     }
   } catch(err) {
     console.error(err)
