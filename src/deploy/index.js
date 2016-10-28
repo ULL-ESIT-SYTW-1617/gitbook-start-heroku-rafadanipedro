@@ -17,6 +17,7 @@ export default async function deploy (nombrePlugin, userArgs) {
     let plugin = require(pluginPath)
 
     let pluginConfig = plugin.config()
+    console.log(typeof pluginConfig.then)
     if (typeof pluginConfig.then === 'Function') {
       pluginConfig = await pluginConfig
     }
