@@ -18,7 +18,7 @@ export default async function deploy (nombrePlugin, userArgs) {
 
     let pluginConfig = plugin.config()
     console.log(typeof pluginConfig.then)
-    if (typeof pluginConfig.then === 'Function') {
+    if (typeof pluginConfig.then === 'function') {
       pluginConfig = await pluginConfig
     }
 
@@ -32,7 +32,7 @@ export default async function deploy (nombrePlugin, userArgs) {
 
     if (plugin.start) {
       let prom = plugin.start(pluginConfig)
-      if (typeof prom.then === 'Function') {
+      if (typeof prom.then === 'function') {
         await prom
       }
     }
